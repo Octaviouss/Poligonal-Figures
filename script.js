@@ -2,38 +2,29 @@
 const lienzo = document.getElementById('lienzo');
 const ctx = lienzo.getContext('2d');
 const selector = document.getElementById('selector-plantilla');
-const btnExportar = document.getElementById('btn-exportar');
 
 // 2. LAS MEMORIAS (BITÁCORAS)
-let puntosActuales = [];      
-let historialTriangulos = []; 
+let puntosActuales = [];      // Guarda los clics del triángulo actual
+let historialTriangulos = []; // Memoria de todos los triángulos listos
+let imagenFondo = null;       // NUEVO: Guarda la foto del animal elegido
 
 // 3. FUNCIÓN MAESTRA DE REDIBUJO
 function actualizarPantalla() {
     // A. Limpiamos el lienzo
     ctx.clearRect(0, 0, lienzo.width, lienzo.height);
 
-    // NUEVO: Si el usuario subió una foto, la dibujamos de fondo con transparencia
+    // B. NUEVO: Si hay una foto de animal seleccionada, la dibujamos al fondo
     if (imagenFondo) {
-        ctx.globalAlpha = 0.3; // Hace la foto borrosa/tenue para poder calcar encima
         ctx.drawImage(imagenFondo, 0, 0, lienzo.width, lienzo.height);
-        ctx.globalAlpha = 1.0; // Restablecemos la opacidad para los triángulos
     }
 
-    // B. Dibujamos la plantilla seleccionada al fondo (silueta guía)
+    // C. Dibujamos las líneas guía (corazón o diamante) si están activas
     dibujarPlantillaDeFondo(selector.value);
-
-    // C. Dibujamos las Pestañas de Pegado automáticas PRIMERO (para que queden abajo del triángulo)
-    historialTriangulos.forEach(function(triangulo) {
-        calcularYDibujaPestañas(triangulo.p1, triangulo.p2);
-        calcularYDibujaPestañas(triangulo.p2, triangulo.p3);
-        calcularYDibujaPestañas(triangulo.p3, triangulo.p1);
-    });
 
     // D. Redibujamos todos los triángulos guardados en la memoria
     historialTriangulos.forEach(function(triangulo) {
         ctx.fillStyle = triangulo.colorRelleno;
-        ctx.strokeStyle = '#000000'; // Línea de corte exterior: Sólida y Negra
+        ctx.strokeStyle = triangulo.colorBorde;
         ctx.lineWidth = 2;
 
         ctx.beginPath();
@@ -45,7 +36,7 @@ function actualizarPantalla() {
         ctx.stroke();
     });
 
-    // E. Dibujamos los clics temporales activos
+    // E. Dibujamos los puntitos rojos del triángulo en proceso
     puntosActuales.forEach(function(punto) {
         ctx.fillStyle = '#ff6b6b';
         ctx.beginPath();
@@ -54,73 +45,7 @@ function actualizarPantalla() {
     });
 }
 
-// 4. ALGORITMO VECTORIAL PARA GENERAR PESTAÑAS (Trapecios de Pegado)
-function calcularYDibujaPestañas(A, B) {
-    // Ancho de la pestaña (H) e indentación para el doblez en píxeles
-    const H = 14; 
-    const indent = 6;
-
-    // Vector director del segmento (B - A)
-    const vx = B.x - A.x;
-    const vy = B.y - A.y;
-    const longitud = Math.sqrt(vx * vx + vy * vy);
-
-    if (longitud === 0) return;
-
-    // Vectores unitarios directores
-    const ux = vx / longitud;
-    const uy = vy / longitud;
-
-    // Vector normal hacia el exterior (rotado 90 grados)
-    const nx = -uy;
-    const ny = ux;
-
-    // Ecuaciones de los 4 puntos del trapecio de la pestaña
-    const t1x = A.x + ux * indent;
-    const t1y = A.y + uy * indent;
-
-    const t2x = A.x + ux * indent + nx * H;
-    const t2y = A.y + uy * indent + ny * H;
-
-    const t3x = B.x - ux * indent + nx * H;
-    const t3y = B.y - uy * indent + ny * H;
-
-    const t4x = B.x - ux * indent;
-    const t4y = B.y - uy * indent;
-
-    // RENDERIZADO EN PANTALLA
-    // Relleno suave para la pestaña
-    ctx.fillStyle = 'rgba(200, 200, 210, 0.3)';
-    ctx.beginPath();
-    ctx.moveTo(t1x, t1y);
-    ctx.lineTo(t2x, t2y);
-    ctx.lineTo(t3x, t3y);
-    ctx.lineTo(t4x, t4y);
-    ctx.closePath();
-    ctx.fill();
-
-    // Líneas Exteriores de la pestaña (Corte: Sólidas)
-    ctx.strokeStyle = '#000000';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(t1x, t1y);
-    ctx.lineTo(t2x, t2y);
-    ctx.lineTo(t3x, t3y);
-    ctx.lineTo(t4x, t4y);
-    ctx.stroke();
-
-    // Base de la pestaña (Doblez: Línea Punteada)
-    ctx.strokeStyle = '#666677';
-    ctx.lineWidth = 1;
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.moveTo(A.x, A.y);
-    ctx.lineTo(B.x, B.y);
-    ctx.stroke();
-    ctx.setLineDash([]); // Reseteamos
-}
-
-// 5. DETECTOR DE CLICS
+// 4. DETECTOR DE CLICS EN EL LIENZO (Para dibujar)
 lienzo.addEventListener('click', function(evento) {
     const rect = lienzo.getBoundingClientRect();
     const x = evento.clientX - rect.left;
@@ -133,129 +58,67 @@ lienzo.addEventListener('click', function(evento) {
             p1: puntosActuales[0],
             p2: puntosActuales[1],
             p3: puntosActuales[2],
-            colorRelleno: 'rgba(255, 255, 255, 0.8)', // Blanco semi-transparente ideal para imprimir
-            colorBorde: '#000000'
+            // Color semi-transparente para poder seguir viendo la foto de fondo al calcar
+            colorRelleno: 'rgba(78, 205, 196, 0.5)', 
+            colorBorde: '#4ecdc4'
         };
 
         historialTriangulos.push(nuevoTriangulo);
-        puntosActuales = []; 
+        puntosActuales = [];
     }
+
     actualizarPantalla();
 });
 
-// 6. MOTOR DE EXPORTACIÓN VECTORIAL (Bajar Archivo Imprimible)
-btnExportar.addEventListener('click', function() {
-    if (historialTriangulos.length === 0) {
-        alert("¡Primero dibuja algunos triángulos antes de exportar!");
-        return;
-    }
-
-    // Iniciamos la cadena de texto SVG estructurada
-    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${lienzo.width} ${lienzo.height}" width="${lienzo.width}" height="${lienzo.height}">`;
-    svg += `<rect width="100%" height="100%" fill="#ffffff"/>`; // Fondo blanco puro para impresión
-
-    // Exportamos las pestañas primero en el código SVG
-    historialTriangulos.forEach(t => {
-        [ [t.p1, t.p2], [t.p2, t.p3], [t.p3, t.p1] ].forEach(arista => {
-            const A = arista[0]; const B = arista[1];
-            const vx = B.x - A.x; const vy = B.y - A.y;
-            const len = Math.sqrt(vx*vx + vy*vy);
-            if(len === 0) return;
-            const ux = vx/len; const uy = vy/len;
-            const nx = -uy; const ny = ux;
-            const H = 14; const ind = 6;
-
-            const t1x = A.x + ux * ind;   const t1y = A.y + uy * ind;
-            const t2x = t1x + nx * H;     const t2y = t1y + ny * H;
-            const t4x = B.x - ux * ind;   const t4y = B.y - uy * ind;
-            const t3x = t4x + nx * H;     const t3y = t4y + ny * H;
-
-            // Trapecio
-            svg += `<polygon points="${t1x},${t1y} ${t2x},${t2y} ${t3x},${t3y} ${t4x},${t4y}" fill="#f1f5f9" stroke="#000000" stroke-width="1.5"/>`;
-            // Línea interna de doblez discontinua
-            svg += `<line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" stroke="#666677" stroke-width="1" stroke-dasharray="4,4"/>`;
-        });
-    });
-
-    // Exportamos los triángulos principales
-    historialTriangulos.forEach(t => {
-        svg += `<polygon points="${t.p1.x},${t.p1.y} ${t.p2.x},${t.p2.y} ${t.p3.x},${t.p3.y}" fill="none" stroke="#000000" stroke-width="2"/>`;
-    });
-
-    svg += `</svg>`;
-
-    // Crear la descarga en el navegador instantánea
-    const blob = new Blob([svg], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
-    const descarga = document.createElement('a');
-    descarga.href = url;
-    descarga.download = 'patron_escultura_papercraft.svg';
-    document.body.appendChild(descarga);
-    descarga.click();
-    document.body.removeChild(descarga);
-    URL.revokeObjectURL(url);
-});
-
-// 7. DIBUJANTE DE PLANTILLAS DE FONDO
+// 5. DIBUJANTE DE PLANTILLAS GEOMÉTRICAS
 function dibujarPlantillaDeFondo(tipo) {
-    ctx.strokeStyle = '#444455'; 
+    ctx.strokeStyle = '#555566';
     ctx.lineWidth = 1;
-    ctx.setLineDash([5, 5]); 
+    ctx.setLineDash([5, 5]);
 
     if (tipo === 'corazon') {
-        ctx.beginPath(); ctx.moveTo(300, 150); ctx.lineTo(380, 80); ctx.lineTo(460, 150);
-        ctx.lineTo(300, 350); ctx.lineTo(140, 150); ctx.lineTo(220, 80); ctx.closePath(); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(300, 150); ctx.lineTo(380, 80); ctx.lineTo(460, 150);
+        ctx.lineTo(300, 350); ctx.lineTo(140, 150); ctx.lineTo(220, 80);
+        ctx.closePath(); ctx.stroke();
     } else if (tipo === 'diamante') {
-        ctx.beginPath(); ctx.moveTo(300, 50); ctx.lineTo(450, 150); ctx.lineTo(300, 350); ctx.lineTo(150, 150); ctx.closePath(); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(150, 150); ctx.lineTo(450, 150); ctx.moveTo(300, 50); ctx.lineTo(300, 350); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(300, 50); ctx.lineTo(450, 150); ctx.lineTo(300, 350); ctx.lineTo(150, 150);
+        ctx.closePath(); ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(150, 150); ctx.lineTo(450, 150);
+        ctx.moveTo(300, 50); ctx.lineTo(300, 350);
+        ctx.stroke();
     }
-    ctx.setLineDash([]); 
+    ctx.setLineDash([]);
 }
 
-selector.addEventListener('change', actualizarPantalla);
-
-// 8. MOTOR DE CARGA DE IMÁGENES DE FONDO (Para calcar figuras complejas)
-const cargadorImagen = document.getElementById('cargador-imagen');
-let imagenFondo = null; // Aquí guardaremos la foto del Dóberman o mascota
-
-cargadorImagen.addEventListener('change', function(evento) {
-    const archivo = evento.target.files[0];
-    if (!archivo) return;
-
-    const lector = new FileReader();
-    
-    // Cuando el navegador termine de leer el archivo...
-    lector.onload = function(e) {
-        imagenFondo = new Image();
-        imagenFondo.onload = function() {
-            selector.value = 'ninguna'; // Desactivamos las plantillas prehechas
-            actualizarPantalla(); // Redibujamos el lienzo con la nueva foto atrás
-        };
-        imagenFondo.src = e.target.result; // Asignamos la imagen guardada
-    };
-    
-    lector.readAsDataURL(archivo);
+// 6. DETECTOR DE CAMBIO DE PLANTILLA GEOMÉTRICA
+selector.addEventListener('change', function() {
+    actualizarPantalla();
 });
 
-// 9. DETECTOR DE CLICS EN LA GALERÍA PRECARGADA
+// 7. NUEVO: DETECTOR DE CLICS EN LAS TARJETAS DE ANIMALES
+// Buscamos todas las tarjetas en el HTML
 const tarjetas = document.querySelectorAll('.tarjeta-diseno');
 
-tarjetas.forEach(tarjeta => {
+tarjetas.forEach(function(tarjeta) {
     tarjeta.addEventListener('click', function() {
-        // Obtenemos la ruta de la imagen de la tarjeta seleccionada
-        const rutaImagen = this.getAttribute('data-img');
+        // Obtenemos la URL de la imagen guardada en el "data-img"
+        const urlImagen = tarjeta.getAttribute('data-img');
         
-        imagenFondo = new Image();
+        // Creamos una imagen virtual en JavaScript
+        const nuevaImagen = new Image();
+        nuevaImagen.src = urlImagen;
         
-        // Regla de seguridad para permitir que imágenes de internet se puedan descargar en tu SVG
-        imagenFondo.crossOrigin = "anonymous"; 
-        
-        imagenFondo.onload = function() {
-            selector.value = 'ninguna'; // Apagamos las plantillas geométricas simples
-            puntosActuales = [];       // Limpiamos trazos colgados
-            actualizarPantalla();      // Pintamos la nueva silueta de fondo
+        // Evita problemas de seguridad al intentar descargar el lienzo después
+        nuevaImagen.crossOrigin = "anonymous"; 
+
+        // Cuando la imagen termine de cargar en internet, la metemos al lienzo
+        nuevaImagen.onload = function() {
+            imagenFondo = nuevaImagen;
+            actualizarPantalla(); // Refrescamos la pantalla para mostrarla
         };
-        
-        imagenFondo.src = rutaImagen;
     });
 });
