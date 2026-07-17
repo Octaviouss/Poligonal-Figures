@@ -44,3 +44,56 @@ lienzo.addEventListener('click', function(evento) {
         puntos = [];
     }
 });
+
+// 4. SECCIÓN DE PLANTILLAS PREHECHAS
+const selector = document.getElementById('selector-plantilla');
+
+// Función para dibujar las líneas guía de fondo
+function dibujarPlantilla(tipo) {
+    // Limpiamos el lienzo para borrar la plantilla anterior (pero sin borrar tus clics)
+    ctx.clearRect(0, 0, lienzo.width, lienzo.height);
+    
+    // Configuramos un estilo de línea tenue y punteada para la guía
+    ctx.strokeStyle = '#ccc';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([5, 5]); // Hace la línea punteada
+
+    if (tipo === 'corazon') {
+        // Trazamos una silueta simple de corazón geométrico
+        ctx.beginPath();
+        ctx.moveTo(300, 150);
+        ctx.lineTo(380, 80);
+        ctx.lineTo(460, 150);
+        ctx.lineTo(300, 350); // Punta inferior
+        ctx.lineTo(140, 150);
+        ctx.lineTo(220, 80);
+        ctx.closePath();
+        ctx.stroke();
+    } else if (tipo === 'diamante') {
+        // Trazamos una silueta de diamante geométrico
+        ctx.beginPath();
+        ctx.moveTo(300, 50);  // Punta superior
+        ctx.lineTo(450, 150); // Esquina derecha
+        ctx.lineTo(300, 350); // Punta inferior
+        ctx.lineTo(150, 150); // Esquina izquierda
+        ctx.closePath();
+        ctx.stroke();
+        
+        // Línea interna del diamante para darle efecto 3D
+        ctx.beginPath();
+        ctx.moveTo(150, 150);
+        ctx.lineTo(450, 150);
+        ctx.moveTo(300, 50);
+        ctx.lineTo(300, 350);
+        ctx.stroke();
+    }
+
+    // Volvemos a activar la línea sólida para cuando el usuario dibuje
+    ctx.setLineDash([]);
+}
+
+// Escuchamos cuando el usuario cambie la opción del menú desplegable
+selector.addEventListener('change', function() {
+    dibujarPlantilla(selector.value);
+    puntos = []; // Reiniciamos los puntos para que empiece limpio
+});
