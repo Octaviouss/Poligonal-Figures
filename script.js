@@ -206,3 +206,26 @@ function dibujarPlantillaDeFondo(tipo) {
 }
 
 selector.addEventListener('change', actualizarPantalla);
+
+// 8. MOTOR DE CARGA DE IMÁGENES DE FONDO (Para calcar figuras complejas)
+const cargadorImagen = document.getElementById('cargador-imagen');
+let imagenFondo = null; // Aquí guardaremos la foto del Dóberman o mascota
+
+cargadorImagen.addEventListener('change', function(evento) {
+    const archivo = evento.target.files[0];
+    if (!archivo) return;
+
+    const lector = new FileReader();
+    
+    // Cuando el navegador termine de leer el archivo...
+    lector.onload = function(e) {
+        imagenFondo = new Image();
+        imagenFondo.onload = function() {
+            selector.value = 'ninguna'; // Desactivamos las plantillas prehechas
+            actualizarPantalla(); // Redibujamos el lienzo con la nueva foto atrás
+        };
+        imagenFondo.src = e.target.result; // Asignamos la imagen guardada
+    };
+    
+    lector.readAsDataURL(archivo);
+});
