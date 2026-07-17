@@ -21,29 +21,36 @@
             <canvas id="lienzo" width="600" height="400" style="border: 1px solid #1e293b; background-color: #0f172a; display: inline-block;"></canvas>
         </div>
 
-        <!-- 3. GALERÍA DE DISEÑOS PRECARGADOS (Alineados horizontalmente) -->
-        <div id="seccion-catatogo" style="margin: 25px 0; text-align: center;">
-            <h3 style="color: #fff; font-family: sans-serif; margin-bottom: 15px;">🐕 Elige una Silueta Base para Diseñar:</h3>
+        <!-- 3. GALERÍA DE DISEÑOS PRECARGADOS (Modelos de Lujo Estilo Etsy) -->
+        <div id="seccion-catatogo" style="margin: 35px 0; text-align: center;">
+            <h3 style="color: #64748b; font-family: 'Segoe UI', sans-serif; font-size: 0.85rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 25px;">
+                📐 COLECCIÓN ESCULTURAS COMANCHET: ESTUDIO DE ARTE
+            </h3>
             
-            <!-- Este contenedor usa Flexbox para ponerlos en fila -->
             <div class="galeria-cuadricula" style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
                 
-                <!-- Tarjeta 1: Dóberman -->
-                <div class="tarjeta-diseno" data-img="https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=600" style="border: 2px solid #334155; border-radius: 8px; padding: 10px; background: #1e293b; cursor: pointer; text-align: center; width: 140px; transition: transform 0.2s;">
-                    <img src="https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=150" alt="Dóberman" style="width: 100%; border-radius: 4px; height: 95px; object-fit: cover;">
-                    <p style="color: #fff; margin: 8px 0 0 0; font-size: 13px; font-family: sans-serif;">Dóberman Guardián</p>
+                <!-- Modelo 1: Toro Feroz -->
+                <div class="tarjeta-diseno" data-img="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600" style="border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; background: rgba(15, 23, 42, 0.4); cursor: pointer; text-align: center; width: 150px; transition: all 0.3s;">
+                    <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=200" alt="Toro Low Poly" style="width: 100%; border-radius: 6px; height: 110px; object-fit: cover; filter: grayscale(1) brightness(0.7);">
+                    <p style="color: #94a3b8; margin: 10px 0 0 0; font-size: 0.8rem; font-family: inherit; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;">Toro de Wall Street</p>
                 </div>
 
-                <!-- Tarjeta 2: Lobo -->
-                <div class="tarjeta-diseno" data-img="https://images.unsplash.com/photo-1590420485404-f86d22b8abf8?w=600" style="border: 2px solid #334155; border-radius: 8px; padding: 10px; background: #1e293b; cursor: pointer; text-align: center; width: 140px; transition: transform 0.2s;">
-                    <img src="https://images.unsplash.com/photo-1590420485404-f86d22b8abf8?w=150" alt="Lobo" style="width: 100%; border-radius: 4px; height: 95px; object-fit: cover;">
-                    <p style="color: #fff; margin: 8px 0 0 0; font-size: 13px; font-family: sans-serif;">Lobo Estepario</p>
+                <!-- Modelo 2: Elefante Imperial -->
+                <div class="tarjeta-diseno" data-img="https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?w=600" style="border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; background: rgba(15, 23, 42, 0.4); cursor: pointer; text-align: center; width: 150px; transition: all 0.3s;">
+                    <img src="https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?w=200" alt="Elefante Low Poly" style="width: 100%; border-radius: 6px; height: 110px; object-fit: cover; filter: grayscale(1) brightness(0.7);">
+                    <p style="color: #94a3b8; margin: 10px 0 0 0; font-size: 0.8rem; font-family: inherit; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;">Elefante Imperial</p>
                 </div>
 
-                <!-- Tarjeta 3: Gato -->
-                <div class="tarjeta-diseno" data-img="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600" style="border: 2px solid #334155; border-radius: 8px; padding: 10px; background: #1e293b; cursor: pointer; text-align: center; width: 140px; transition: transform 0.2s;">
-                    <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=150" alt="Gato" style="width: 100%; border-radius: 4px; height: 95px; object-fit: cover;">
-                    <p style="color: #fff; margin: 8px 0 0 0; font-size: 13px; font-family: sans-serif;">Gato Minimalista</p>
+                <!-- Modelo 3: Rinoceronte Acorazado -->
+                <div class="tarjeta-diseno" data-img="https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?w=600" style="border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; background: rgba(15, 23, 42, 0.4); cursor: pointer; text-align: center; width: 150px; transition: all 0.3s;">
+                    <img src="https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?w=200" alt="Rinoceronte Low Poly" style="width: 100%; border-radius: 6px; height: 110px; object-fit: cover; filter: grayscale(1) brightness(0.6);">
+                    <p style="color: #94a3b8; margin: 10px 0 0 0; font-size: 0.8rem; font-family: inherit; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;">Rinoceronte Negro</p>
+                </div>
+
+                <!-- Modelo 4: Pantera Sigilosa -->
+                <div class="tarjeta-diseno" data-img="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600" style="border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; background: rgba(15, 23, 42, 0.4); cursor: pointer; text-align: center; width: 150px; transition: all 0.3s;">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=200" alt="Pantera Low Poly" style="width: 100%; border-radius: 6px; height: 110px; object-fit: cover; filter: grayscale(1) brightness(0.6);">
+                    <p style="color: #94a3b8; margin: 10px 0 0 0; font-size: 0.8rem; font-family: inherit; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;">Pantera Sigilosa</p>
                 </div>
 
             </div>
