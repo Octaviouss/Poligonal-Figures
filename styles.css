@@ -181,16 +181,20 @@ button {
 
 /* Botón Descargar: El Call to Action de Compra */
 #btn-exportar {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, #8a7355 0%, #5c4d38 100%); /* Bronce / Carbón Premium */
     color: #ffffff;
     font-weight: 600;
-    box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.3);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 #btn-exportar:hover {
     transform: scale(1.02);
-    box-shadow: 0 6px 20px 0 rgba(59, 130, 246, 0.5);
-    background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+    background: linear-gradient(135deg, #a38965 0%, #6e5b43 100%);
+    box-shadow: 0 6px 25px rgba(138, 115, 85, 0.2);
 }
 
 #btn-exportar:active {
