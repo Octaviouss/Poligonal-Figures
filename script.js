@@ -193,19 +193,27 @@ btnExportar.addEventListener('click', function() {
     URL.revokeObjectURL(url);
 });
 
-// 9. RECEPTOR DE CLICS EN LAS TARJETAS DE ANIMALES
+// 9. RECEPTOR DE CLICS EN LAS TARJETAS DE ANIMALES (¡CORREGIDO!)
 const tarjetas = document.querySelectorAll('.tarjeta-diseno');
 tarjetas.forEach(function(tarjeta) {
     tarjeta.addEventListener('click', function() {
         const urlImagen = tarjeta.getAttribute('data-img');
         const nuevaImagen = new Image();
-        nuevaImagen.src = urlImagen;
+        
+        // 🔥 ¡CORRECCIÓN AQUÍ! Primero configuramos la seguridad, LUEGO asignamos la URL
         nuevaImagen.crossOrigin = "anonymous"; 
+        nuevaImagen.src = urlImagen; 
 
         nuevaImagen.onload = function() {
             imagenFondo = nuevaImagen;
-            selector.value = 'ninguna'; 
-            actualizarPantalla(); 
+            selector.value = 'ninguna'; // Desactivamos corazón/diamante
+            actualizarPantalla(); // Refrescamos el lienzo para pintar la foto atrás
+        };
+
+        // Por si la imagen falla por temas de internet, nos avisará con un mensaje:
+        nuevaImagen.onerror = function() {
+            console.error("Error cargando la imagen desde: " + urlImagen);
+            alert("La imagen no pudo cargarse. Asegúrate de estar conectado a internet.");
         };
     });
 });
