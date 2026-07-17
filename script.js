@@ -236,3 +236,26 @@ cargadorImagen.addEventListener('change', function(evento) {
     
     lector.readAsDataURL(archivo);
 });
+
+// 9. DETECTOR DE CLICS EN LA GALERÍA PRECARGADA
+const tarjetas = document.querySelectorAll('.tarjeta-diseno');
+
+tarjetas.forEach(tarjeta => {
+    tarjeta.addEventListener('click', function() {
+        // Obtenemos la ruta de la imagen de la tarjeta seleccionada
+        const rutaImagen = this.getAttribute('data-img');
+        
+        imagenFondo = new Image();
+        
+        // Regla de seguridad para permitir que imágenes de internet se puedan descargar en tu SVG
+        imagenFondo.crossOrigin = "anonymous"; 
+        
+        imagenFondo.onload = function() {
+            selector.value = 'ninguna'; // Apagamos las plantillas geométricas simples
+            puntosActuales = [];       // Limpiamos trazos colgados
+            actualizarPantalla();      // Pintamos la nueva silueta de fondo
+        };
+        
+        imagenFondo.src = rutaImagen;
+    });
+});
