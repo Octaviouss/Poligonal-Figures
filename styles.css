@@ -1,82 +1,198 @@
-/* DISEÑO GENERAL DE LA PÁGINA */
+/* ==========================================
+   ESTILOS PREMIUM: ESTUDIO DE POLÍGONOS 3D
+   ========================================== */
+
+/* 1. Base del Sitio (Estilo Galería de Lujo) */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #1e1e24; /* Un fondo oscuro elegante */
-    color: #f5f5f7;
+    background-color: #090d16; /* Negro azulado profundo */
+    color: #f1f5f9;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 100vh;
 }
 
-header {
+/* Encabezados elegantes y estilizados */
+h1, h2, h3 {
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
     text-align: center;
-    margin-bottom: 30px;
 }
 
-header h1 {
-    color: #ff6b6b; /* Un tono rojizo moderno para el título */
+h1 {
+    color: #ffffff;
+    font-size: 2.2rem;
     margin-bottom: 5px;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
 }
 
-header p {
-    color: #a0a0aa;
-    font-size: 14px;
+p.subtitulo {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-top: 0;
+    margin-bottom: 30px;
+    text-align: center;
 }
 
-/* ÁREA DEL LIENZO */
-#area-drawing {
-    background: #2a2a35;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    margin-bottom: 20px;
+/* 2. Área de Trabajo Principal */
+main {
+    max-width: 900px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
 }
 
-canvas {
-    border-radius: 8px;
+/* Contenedor del Lienzo con sombra de estudio */
+#area-dibujo {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    border: 1px solid #1e293b;
+    background: #0f172a;
+}
+
+canvas#lienzo {
     display: block;
-    cursor: crosshair; /* Cambia el cursor a una cruz para dar idea de dibujo */
+    cursor: crosshair;
+    transition: opacity 0.3s ease;
 }
 
-/* PANEL DE BOTONES */
+/* 3. Catálogo de Siluetas Interactivas (Estilo Tienda de Arte) */
+#seccion-catatogo {
+    width: 100%;
+}
+
+#seccion-catatogo h3 {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    margin-bottom: 15px;
+}
+
+.galeria-cuadricula {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Tarjetas de Producto estilo Glassmorphism */
+.tarjeta-diseno {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 12px;
+    width: 160px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+.tarjeta-diseno:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    background: rgba(30, 41, 59, 0.7);
+}
+
+.tarjeta-diseno img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 8px;
+    filter: brightness(0.9);
+    transition: filter 0.3s ease;
+}
+
+.tarjeta-diseno:hover img {
+    filter: brightness(1.1);
+}
+
+.tarjeta-diseno p {
+    color: #cbd5e1;
+    margin: 10px 0 0 0;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+/* 4. Panel de Controles e Inputs */
 #panel-controles {
     display: flex;
     gap: 15px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 10px;
 }
 
-button {
-    background-color: #ff6b6b;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    font-size: 14px;
-    font-weight: bold;
+/* El Selector Dropdown */
+#selector-plantilla {
+    background-color: #0f172a;
+    color: #f1f5f9;
+    border: 1px solid #334155;
+    padding: 12px 20px;
     border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: border-color 0.2s;
 }
 
-button:hover {
-    background-color: #ff5252; /* El botón se oscurece un poco al pasar el ratón */
+#selector-plantilla:focus {
+    border-color: #64748b;
 }
 
+/* Botonera de Acción de Alta Gama */
+button {
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Botón Cambiar Paleta: Minimalista e Industrial */
+#btn-color {
+    background-color: transparent;
+    color: #e2e8f0;
+    border: 1px solid #475569;
+}
+
+#btn-color:hover {
+    background-color: #1e293b;
+    border-color: #94a3b8;
+    color: #ffffff;
+}
+
+/* Botón Descargar: El Call to Action de Compra */
 #btn-exportar {
-    background-color: #4ecdc4; /* Color diferente para el botón de compra/descarga */
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.3);
 }
 
 #btn-exportar:hover {
-    background-color: #3bb3ab;
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px 0 rgba(59, 130, 246, 0.5);
+    background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
 }
-2. Conectar el diseño con tu HTML
-Para que tu página web sepa que debe usar este nuevo diseño, tenemos que decírselo dentro del archivo index.html.
 
-Abre de nuevo el archivo index.html haciendo clic en su nombre en la barra de la izquierda.
-
-Busca la línea número 6, justo debajo de <title>Poligonal Figures | Creador de Arte</title>.
-
-Pega esta nueva línea de código justo ahí abajo (en la línea 7):
-
-HTML
-<link rel="stylesheet" href="styles.css">
+#btn-exportar:active {
+    transform: scale(0.98);
+}
