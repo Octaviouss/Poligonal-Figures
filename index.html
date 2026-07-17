@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poligonal Figures | Creador de Arte</title>
+  <link rel="stylesheet" href="styles.css">  
+</head>
+<body>
+    
+    <!-- ENCABEZADO DE LA PÁGINA -->
+    <header>
+        <h1>Poligonal Figures</h1>
+        <p>Crea, diseña e imprime tus figuras 3D y papel en segundos.</p>
+    </header>
+
+    <!-- ÁREA PRINCIPAL DE TRABAJO -->
+    <main>
+        <!-- 1. El Lienzo donde ocurrirá la magia -->
+        <div id="area-dibujo">
+            <!-- Este "canvas" es nuestra pizarra en blanco. Le puse un borde temporal para que lo veamos. -->
+            <canvas id="lienzo" width="600" height="400" style="border: 2px dashed #888; background-color: #f9f9f9;"></canvas>
+        </div>
+
+        <!-- 2. Los Botones de control -->
+        <div id="panel-controles">
+            <button id="btn-color">🎨 Cambiar Paleta de Color</button>
+            <button id="btn-exportar">📥 Comprar y Descargar Archivo</button>
+        </div>
+    </main>
+
+</body>
+</html>
