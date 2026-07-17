@@ -1,85 +1,96 @@
-// 1. Conectamos nuestro código con el lienzo de la página web
+// 1. CONEXIÓN CON EL LIENZO Y HERRAMIENTAS
 const lienzo = document.getElementById('lienzo');
-const ctx = lienzo.getContext('2d'); // "ctx" es el pincel virtual para dibujar en 2D
+const ctx = lienzo.getContext('2d');
+const selector = document.getElementById('selector-plantilla');
 
-// 2. Creamos una caja (array) vacía para ir guardando los clics del usuario
-let puntos = [];
+// 2. LAS MEMORIAS (BITÁCORAS)
+let puntosActuales = [];      // Guarda los clics del triángulo que estás haciendo ahorita
+let historialTriangulos = []; // La "memoria permanente" de todos los triángulos listos
 
-// 3. Le decimos al lienzo que se quede "escuchando" cuando el usuario haga clic
+// 3. FUNCIÓN MAESTRA DE REDIBUJO (La que mantiene todo vivo)
+function actualizarPantalla() {
+    // A. Limpiamos el lienzo por completo para evitar encimados
+    ctx.clearRect(0, 0, lienzo.width, lienzo.height);
+
+    // B. Dibujamos la plantilla seleccionada al fondo
+    dibujarPlantillaDeFondo(selector.value);
+
+    // C. Redibujamos todos los triángulos guardados en la memoria permanente
+    historialTriangulos.forEach(function(triangulo) {
+        ctx.fillStyle = triangulo.colorRelleno;
+        ctx.strokeStyle = triangulo.colorBorde;
+        ctx.lineWidth = 2;
+
+        ctx.beginPath();
+        ctx.moveTo(triangulo.p1.x, triangulo.p1.y);
+        ctx.lineTo(triangulo.p2.x, triangulo.p2.y);
+        ctx.lineTo(triangulo.p3.x, triangulo.p3.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+    });
+
+    // D. Dibujamos los puntitos rojos del triángulo que se está trazando en este momento
+    puntosActuales.forEach(function(punto) {
+        ctx.fillStyle = '#ff6b6b';
+        ctx.beginPath();
+        ctx.arc(punto.x, punto.y, 5, 0, Math.PI * 2);
+        ctx.fill();
+    });
+}
+
+// 4. DETECTOR DE CLICS DEL USUARIO
 lienzo.addEventListener('click', function(evento) {
-    
-    // Calculamos la posición exacta del ratón dentro del recuadro del lienzo
     const rect = lienzo.getBoundingClientRect();
     const x = evento.clientX - rect.left;
     const y = evento.clientY - rect.top;
 
-    // Guardamos las coordenadas (X y Y) en nuestra lista de puntos
-    puntos.push({ x: x, y: y });
+    // Guardamos el punto en el triángulo actual
+    puntosActuales.push({ x: x, y: y });
 
-    // Dibujamos un pequeño círculo rojo donde el usuario hizo clic
-    ctx.fillStyle = '#ff6b6b';
-    ctx.beginPath();
-    ctx.arc(x, y, 5, 0, Math.PI * 2); // Crea un circulito de 5 píxeles de radio
-    ctx.fill();
+    // Si ya completamos 3 clics, guardamos el triángulo en la memoria permanente
+    if (puntosActuales.length === 3) {
+        const nuevoTriangulo = {
+            p1: puntosActuales[0],
+            p2: puntosActuales[1],
+            p3: puntosActuales[2],
+            colorRelleno: 'rgba(78, 205, 196, 0.4)', // Color base verde agua
+            colorBorde: '#4ecdc4'
+        };
 
-    // ¡La magia poligonal!: Si el usuario ya hizo 3 clics, formamos un triángulo
-    if (puntos.length === 3) {
-        
-        // Definimos el color de relleno (un verde agua semi-transparente) y el borde
-        ctx.fillStyle = 'rgba(78, 205, 196, 0.4)';
-        ctx.strokeStyle = '#4ecdc4';
-        ctx.lineWidth = 2;
-
-        // Trazamos las líneas uniendo el punto 1, con el 2, con el 3
-        ctx.beginPath();
-        ctx.moveTo(puntos[0].x, puntos[0].y); // Va al primer clic
-        ctx.lineTo(puntos[1].x, puntos[1].y); // Traza línea al segundo clic
-        ctx.lineTo(puntos[2].x, puntos[2].y); // Traza línea al tercer clic
-        ctx.closePath();                      // Cierra el triángulo volviendo al primero
-        
-        ctx.fill();   // Pinta el interior del triángulo
-        ctx.stroke(); // Dibuja el borde brillante
-
-        // Vaciamos la lista de puntos para que el usuario pueda empezar un nuevo triángulo
-        puntos = [];
+        historialTriangulos.push(nuevoTriangulo); // Se guarda en la bitácora principal
+        puntosActuales = []; // Vaciamos los clics temporales para el siguiente triángulo
     }
+
+    // Le ordenamos a la pantalla actualizarse para mostrar los cambios inmediatamente
+    actualizarPantalla();
 });
 
-// 4. SECCIÓN DE PLANTILLAS PREHECHAS
-const selector = document.getElementById('selector-plantilla');
-
-// Función para dibujar las líneas guía de fondo
-function dibujarPlantilla(tipo) {
-    // Limpiamos el lienzo para borrar la plantilla anterior (pero sin borrar tus clics)
-    ctx.clearRect(0, 0, lienzo.width, lienzo.height);
-    
-    // Configuramos un estilo de línea tenue y punteada para la guía
-    ctx.strokeStyle = '#ccc';
+// 5. DIBUJANTE DE PLANTILLAS
+function dibujarPlantillaDeFondo(tipo) {
+    ctx.strokeStyle = '#555566'; // Líneas guía un poco más visibles sobre fondo oscuro
     ctx.lineWidth = 1;
-    ctx.setLineDash([5, 5]); // Hace la línea punteada
+    ctx.setLineDash([5, 5]); // Efecto punteado
 
     if (tipo === 'corazon') {
-        // Trazamos una silueta simple de corazón geométrico
         ctx.beginPath();
         ctx.moveTo(300, 150);
         ctx.lineTo(380, 80);
         ctx.lineTo(460, 150);
-        ctx.lineTo(300, 350); // Punta inferior
+        ctx.lineTo(300, 350);
         ctx.lineTo(140, 150);
         ctx.lineTo(220, 80);
         ctx.closePath();
         ctx.stroke();
     } else if (tipo === 'diamante') {
-        // Trazamos una silueta de diamante geométrico
         ctx.beginPath();
-        ctx.moveTo(300, 50);  // Punta superior
-        ctx.lineTo(450, 150); // Esquina derecha
-        ctx.lineTo(300, 350); // Punta inferior
-        ctx.lineTo(150, 150); // Esquina izquierda
+        ctx.moveTo(300, 50);
+        ctx.lineTo(450, 150);
+        ctx.lineTo(300, 350);
+        ctx.lineTo(150, 150);
         ctx.closePath();
         ctx.stroke();
         
-        // Línea interna del diamante para darle efecto 3D
         ctx.beginPath();
         ctx.moveTo(150, 150);
         ctx.lineTo(450, 150);
@@ -88,12 +99,11 @@ function dibujarPlantilla(tipo) {
         ctx.stroke();
     }
 
-    // Volvemos a activar la línea sólida para cuando el usuario dibuje
-    ctx.setLineDash([]);
+    ctx.setLineDash([]); // Quitamos el punteado para no afectar los triángulos del usuario
 }
 
-// Escuchamos cuando el usuario cambie la opción del menú desplegable
+// 6. DETECTOR DE CAMBIO DE PLANTILLA
 selector.addEventListener('change', function() {
-    dibujarPlantilla(selector.value);
-    puntos = []; // Reiniciamos los puntos para que empiece limpio
+    // Al cambiar la plantilla, solo refrescamos la pantalla (la memoria se mantiene intacta)
+    actualizarPantalla();
 });
