@@ -191,12 +191,14 @@ button {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
+/* Estado: Pasar el mouse */
 #btn-exportar:hover {
     transform: scale(1.02);
     background: linear-gradient(135deg, #a38965 0%, #6e5b43 100%);
     box-shadow: 0 6px 25px rgba(138, 115, 85, 0.2);
 }
 
+/* Estado: Hacer clic (Tu código corregido sin el ; colgado) */
 #btn-exportar:active {
     transform: scale(0.98);
 }
