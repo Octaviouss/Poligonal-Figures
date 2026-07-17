@@ -22,7 +22,7 @@
             <canvas id="lienzo" width="600" height="400" style="border: 2px dashed #888; background-color: #f9f9f9;"></canvas>
         </div>
 
-    <!-- ÁREA PRINCIPAL DE TRABAJO -->
+   <!-- ÁREA PRINCIPAL DE TRABAJO -->
     <main>
         <!-- 1. El Lienzo donde ocurrirá la magia -->
         <div id="area-dibujo">
@@ -30,7 +30,7 @@
             <canvas id="lienzo" width="600" height="400" style="border: 2px dashed #888; background-color: #f9f9f9;"></canvas>
         </div>
 
-    <!-- 3. GALERÍA DE DISEÑOS PRECARGADOS (Estilo Lacrafta) -->
+        <!-- 3. GALERÍA DE DISEÑOS PRECARGADOS (Estilo Lacrafta) -->
         <div id="seccion-catatogo">
             <h3>🐕 Elige una Silueta Base para Diseñar:</h3>
             <div class="galeria-cuadricula">
@@ -54,6 +54,19 @@
                 </div>
 
             </div>
+        </div>
+
+        <!-- 2. Los Botones de control -->
+        <div id="panel-controles">
+            <!-- Selector de plantillas -->
+            <select id="selector-plantilla">
+                <option value="ninguna">✨ Lienzo en Blanco</option>
+                <option value="corazon">❤️ Plantilla: Corazón</option>
+                <option value="diamante">💎 Plantilla: Diamante</option>
+            </select>
+
+            <button id="btn-color">🎨 Cambiar Paleta de Color</button>
+            <button id="btn-exportar">📥 Comprar y Descargar Archivo</button>
         </div>
 
         <!-- 2. Los Botones de control -->
