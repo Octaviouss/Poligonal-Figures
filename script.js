@@ -13,6 +13,13 @@ function actualizarPantalla() {
     // A. Limpiamos el lienzo
     ctx.clearRect(0, 0, lienzo.width, lienzo.height);
 
+    // NUEVO: Si el usuario subió una foto, la dibujamos de fondo con transparencia
+    if (imagenFondo) {
+        ctx.globalAlpha = 0.3; // Hace la foto borrosa/tenue para poder calcar encima
+        ctx.drawImage(imagenFondo, 0, 0, lienzo.width, lienzo.height);
+        ctx.globalAlpha = 1.0; // Restablecemos la opacidad para los triángulos
+    }
+
     // B. Dibujamos la plantilla seleccionada al fondo (silueta guía)
     dibujarPlantillaDeFondo(selector.value);
 
