@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poligonal Figures | Creador de Arte</title>
-  <link rel="stylesheet" href="styles.css">  
+    <link rel="stylesheet" href="styles.css">  
 </head>
 <body>
     
     <!-- ENCABEZADO DE LA PÁGINA -->
-    <header>
+    <header style="text-align: center; margin-bottom: 20px;">
         <h1>Poligonal Figures</h1>
         <p>Crea, diseña e imprime tus figuras 3D y papel en segundos.</p>
     </header>
@@ -17,74 +17,40 @@
     <!-- ÁREA PRINCIPAL DE TRABAJO -->
     <main>
         <!-- 1. El Lienzo donde ocurrirá la magia -->
-        <div id="area-dibujo">
-            <!-- Este "canvas" es nuestra pizarra en blanco. Le puse un borde temporal para que lo veamos. -->
-            <canvas id="lienzo" width="600" height="400" style="border: 2px dashed #888; background-color: #f9f9f9;"></canvas>
+        <div id="area-dibujo" style="text-align: center; margin-bottom: 20px;">
+            <canvas id="lienzo" width="600" height="400" style="border: 2px dashed #888; background-color: #f9f9f9; display: inline-block;"></canvas>
         </div>
 
-   <!-- ÁREA PRINCIPAL DE TRABAJO -->
-    <main>
-        <!-- 1. El Lienzo donde ocurrirá la magia -->
-        <div id="area-dibujo">
-            <!-- Este "canvas" es nuestra pizarra en blanco. Le puse un borde temporal para que lo veamos. -->
-            <canvas id="lienzo" width="600" height="400" style="border: 2px dashed #888; background-color: #f9f9f9;"></canvas>
-        </div>
-
-        <!-- 3. GALERÍA DE DISEÑOS PRECARGADOS (Estilo Lacrafta) -->
-        <div id="seccion-catatogo">
-            <h3>🐕 Elige una Silueta Base para Diseñar:</h3>
-            <div class="galeria-cuadricula">
+        <!-- 3. GALERÍA DE DISEÑOS PRECARGADOS (Alineados horizontalmente) -->
+        <div id="seccion-catatogo" style="margin: 25px 0; text-align: center;">
+            <h3 style="color: #fff; font-family: sans-serif; margin-bottom: 15px;">🐕 Elige una Silueta Base para Diseñar:</h3>
+            
+            <!-- Este contenedor usa Flexbox para ponerlos en fila -->
+            <div class="galeria-cuadricula" style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
                 
                 <!-- Tarjeta 1: Dóberman -->
-                <div class="tarjeta-diseno" data-img="https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=600">
-                    <img src="https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=150" alt="Dóberman">
-                    <p>Dóberman Guardián</p>
+                <div class="tarjeta-diseno" data-img="https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=600" style="border: 2px solid #334155; border-radius: 8px; padding: 10px; background: #1e293b; cursor: pointer; text-align: center; width: 140px; transition: transform 0.2s;">
+                    <img src="https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=150" alt="Dóberman" style="width: 100%; border-radius: 4px; height: 95px; object-fit: cover;">
+                    <p style="color: #fff; margin: 8px 0 0 0; font-size: 13px; font-family: sans-serif;">Dóberman Guardián</p>
                 </div>
 
                 <!-- Tarjeta 2: Lobo -->
-                <div class="tarjeta-diseno" data-img="https://images.unsplash.com/photo-1590420485404-f86d22b8abf8?w=600">
-                    <img src="https://images.unsplash.com/photo-1590420485404-f86d22b8abf8?w=150" alt="Lobo">
-                    <p>Lobo Estepario</p>
+                <div class="tarjeta-diseno" data-img="https://images.unsplash.com/photo-1590420485404-f86d22b8abf8?w=600" style="border: 2px solid #334155; border-radius: 8px; padding: 10px; background: #1e293b; cursor: pointer; text-align: center; width: 140px; transition: transform 0.2s;">
+                    <img src="https://images.unsplash.com/photo-1590420485404-f86d22b8abf8?w=150" alt="Lobo" style="width: 100%; border-radius: 4px; height: 95px; object-fit: cover;">
+                    <p style="color: #fff; margin: 8px 0 0 0; font-size: 13px; font-family: sans-serif;">Lobo Estepario</p>
                 </div>
 
                 <!-- Tarjeta 3: Gato -->
-                <div class="tarjeta-diseno" data-img="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600">
-                    <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=150" alt="Gato">
-                    <p>Gato Minimalista</p>
+                <div class="tarjeta-diseno" data-img="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600" style="border: 2px solid #334155; border-radius: 8px; padding: 10px; background: #1e293b; cursor: pointer; text-align: center; width: 140px; transition: transform 0.2s;">
+                    <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=150" alt="Gato" style="width: 100%; border-radius: 4px; height: 95px; object-fit: cover;">
+                    <p style="color: #fff; margin: 8px 0 0 0; font-size: 13px; font-family: sans-serif;">Gato Minimalista</p>
                 </div>
 
             </div>
         </div>
 
-        <!-- 2. Los Botones de control -->
-        <div id="panel-controles">
-            <!-- Selector de plantillas -->
-            <select id="selector-plantilla">
-                <option value="ninguna">✨ Lienzo en Blanco</option>
-                <option value="corazon">❤️ Plantilla: Corazón</option>
-                <option value="diamante">💎 Plantilla: Diamante</option>
-            </select>
-
-            <button id="btn-color">🎨 Cambiar Paleta de Color</button>
-            <button id="btn-exportar">📥 Comprar y Descargar Archivo</button>
-        </div>
-
-        <!-- 2. Los Botones de control -->
-        <div id="panel-controles">
-            <!-- Selector de plantillas -->
-            <select id="selector-plantilla">
-                <option value="ninguna">✨ Lienzo en Blanco</option>
-                <option value="corazon">❤️ Plantilla: Corazón</option>
-                <option value="diamante">💎 Plantilla: Diamante</option>
-            </select>
-
-            <button id="btn-color">🎨 Cambiar Paleta de Color</button>
-            <button id="btn-exportar">📥 Comprar y Descargar Archivo</button>
-        </div>
-
-                <!-- 2. Los Botones de control -->
-        <div id="panel-controles">
-            <!-- NUEVO: Selector de plantillas -->
+        <!-- 2. Los Botones de control (Un solo set único) -->
+        <div id="panel-controles" style="text-align: center; margin-top: 20px;">
             <select id="selector-plantilla">
                 <option value="ninguna">✨ Lienzo en Blanco</option>
                 <option value="corazon">❤️ Plantilla: Corazón</option>
@@ -96,6 +62,7 @@
         </div>
     </main>
 
+    <!-- CONEXIÓN CON EL SCRIPT ÚNICO -->
     <script src="script.js"></script>
 </body>
 </html>
