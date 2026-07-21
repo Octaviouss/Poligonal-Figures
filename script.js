@@ -164,20 +164,15 @@ if (areaDibujo) {
             canvas.style.opacity = "1";
         });
     });
-    });
 
+    // 3. Cuando el usuario SUELTA la foto (Dentro del bloque de seguridad areaDibujo)
     areaDibujo.addEventListener('drop', (e) => {
+        e.preventDefault();
+        areaDibujo.style.borderColor = "#1e293b"; 
+        canvas.style.opacity = "1";               
+        
         if (e.dataTransfer.files.length > 0) {
-            procesarArchivo(e.dataTransfer.files);
-        }
-    });
-}
-
-// Botón clásico de exploración de archivos
-if (inputSubir) {
-    inputSubir.addEventListener('change', (e) => {
-        if (e.target.files.length > 0) {
-            procesarArchivo(e.target.files);
+            procesarArchivo(e.dataTransfer.files[0]); // Corregido: Enviamos el archivo indexado [0]
         }
     });
 }
