@@ -73,7 +73,7 @@ function generarLowPolyAutomatico() {
     const puntos = [];
     
     // Asegurar esquinas y bordes para que la geometría cubra todo el lienzo
-    puntos.push(, [ancho, 0], [0, alto], [ancho, alto]);
+    puntos.push([0, 0], [ancho, 0], [0, alto], [ancho, alto]);
     for (let x = 0; x <= ancho; x += 50) { puntos.push([x, 0]); puntos.push([x, alto]); }
     for (let y = 0; y <= alto; y += 50) { puntos.push([0, y]); puntos.push([ancho, y]); }
 
