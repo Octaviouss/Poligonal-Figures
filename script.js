@@ -145,22 +145,25 @@ function generarLowPolyAutomatico() {
 // 4. CONTROLADORES DE EVENTOS (Arrastrar, Soltar y Sliders)
 // =========================================================================
 
-// Eventos de arrastrar y soltar archivos en la ventana oscura
+// Eventos de arrastrar y soltar archivos en la ventana oscura (CORREGIDO)
 if (areaDibujo) {
+    // 1. Cuando la foto está FLOTANDO sobre el lienzo, cambiamos el diseño visual
     ['dragenter', 'dragover'].forEach(evt => {
         areaDibujo.addEventListener(evt, (e) => {
             e.preventDefault();
-            areaDibujo.style.borderColor = "#a38965"; // Iluminación premium al sostener foto
+            areaDibujo.style.borderColor = "#a38965"; // Iluminación premium dorada
             canvas.style.opacity = "0.6";
         });
     });
 
-    ['dragleave', 'drop'].forEach(evt => {
+    // 2. Si el usuario SACA la foto sin soltarla, restauramos los estilos
+    ['dragleave'].forEach(evt => {
         areaDibujo.addEventListener(evt, (e) => {
             e.preventDefault();
-            areaDibujo.style.borderColor = "#1e293b";
+            areaDibujo.style.borderColor = "#1e293b"; // Volver al azul oscuro
             canvas.style.opacity = "1";
         });
+    });
     });
 
     areaDibujo.addEventListener('drop', (e) => {
