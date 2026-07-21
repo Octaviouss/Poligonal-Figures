@@ -68,7 +68,7 @@
 
         canvas#lienzo {
             display: block;
-            cursor: crosshair;
+            cursor: pointer;
             transition: opacity 0.3s ease;
         }
 
@@ -243,22 +243,19 @@
             <canvas id="lienzo" width="600" height="400"></canvas>
         </div>
 
-        <!-- 2. PANEL DE CONTROLES (Integrado y Ampliado) -->
+        <!-- 2. PANEL DE CONTROLES -->
         <div id="panel-controles">
-            <!-- Botón estilizado para subir foto propia -->
             <div class="input-subir-personalizado">
                 <button class="btn-subir-estilo">📷 Subir mi propia imagen</button>
                 <input type="file" id="subir-imagen" accept="image/*">
             </div>
 
-            <!-- Slider interactivo para controlar la densidad de polígonos -->
             <div class="control-slider">
                 <label for="slider-puntos">Densidad:</label>
                 <input type="range" id="slider-puntos" min="300" max="3000" step="100" value="1200">
                 <span id="valor-puntos">1200 pts</span>
             </div>
 
-            <!-- Botón Exportar / Guardar resultado -->
             <button id="btn-exportar">Descargar PNG</button>
         </div>
 
@@ -267,7 +264,6 @@
             <h3>📐 COLECCIÓN ESCULTURAS COMANCHET: ESTUDIO DE ARTE</h3>
             
             <div class="galeria-cuadricula">
-                <!-- Tarjeta Demo Gato Low Poly (Usando una muestra genérica basada en tu idea) -->
                 <div class="tarjeta-diseno" id="tarjeta-gato">
                     <img src="https://unsplash.com" alt="Gato">
                     <p>Gato de Estudio</p>
@@ -276,33 +272,205 @@
         </div>
     </main>
 
-    <!-- ==========================================
-       LÓGICA JAVASCRIPT: MOTOR LOW POLY CON DELAUNAY
-       ========================================== -->
-    <!-- Cargamos D3-Delaunay: librería matemática ultrarrápida para computar mallas poligonales -->
+    <!-- INCLUSIÓN DE LIBRERÍA EXTERNA PARA POLÍGONOS -->
     <script src="https://cloudflare.com"></script>
+
+    <!-- MOTOR DE CÓDIGO JAVASCRIPT AUTOMÁTICO -->
     <script>
         const canvas = document.getElementById('lienzo');
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
-        const inputSubir = document.getElementById('subir-imagen');
+        
+        const inputSubir = document.getElementById('subir-imagen'); 
+        const areaDibujo = document.getElementById('area-dibujo');   
         const sliderPuntos = document.getElementById('slider-puntos');
         const valorPuntos = document.getElementById('valor-puntos');
         const btnExportar = document.getElementById('btn-exportar');
         const tarjetaGato = document.getElementById('tarjeta-gato');
 
-        let imagenOriginal = null;
+        let imagenOriginal = null; 
 
-        // 1. Inicializar el canvas con un mensaje artístico elegante
-        ctx.fillStyle = "#0f172a";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "#64748b";
-        ctx.font = "16px sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText("Sube una foto o selecciona una tarjeta para iniciar", canvas.width / 2, canvas.height / 2);
+        // Inicializar la ventana con un retraso corto para asegurar dimensiones estables
+        function inicializarVentana() {
+            ctx.fillStyle = "#0f172a";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "300 16px 'Segoe UI', sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("ARRASTRA TU FOTOGRAFÍA AQUÍ O HAZ CLIC PARA EMPEZAR", canvas.width / 2, canvas.height / 2 - 10);
+            
+            ctx.fillStyle = "#64748b";
+            ctx.font = "13px 'Segoe UI', sans-serif";
+            ctx.fillText("Formatos admitidos: JPG, PNG y WebP", canvas.width / 2, canvas.height / 2 + 15);
+        }
+        setTimeout(inicializarVentana, 100);
 
-        // 2. Escuchar la carga de imágenes propias
-        inputSubir.addEventListener('change', function(e) {
-            const archivo = e.target.files[0];
-            if (!archivo) return;
+        // Procesar archivos binarios de imágenes
+        function procesarArchivo(archivo) {
+           if (!archivo || !archivo.type.startsWith('image/')) {
+                alert("Por favor, sube un archivo de imagen válido.");
+                return;
+            }
 
-Usa el código con precaución.const lector = new FileReader();lector.onload = function(evento) {imagenOriginal = new Image();imagenOriginal.crossOrigin = "anonymous";imagenOriginal.onload = function() {redimensionarYProcesar();};imagenOriginal.src = evento.target.result;};lector.readAsDataURL(archivo);});// 3. Control dinámico de densidad con el slidersliderPuntos.addEventListener('input', function() {valorPuntos.textContent = ${this.value} pts;if (imagenOriginal) {generarLowPoly();}});// 4. Hacer clic en la tarjeta demo del gatotarjetaGato.addEventListener('click', function() {imagenOriginal = new Image();imagenOriginal.crossOrigin = "anonymous";imagenOriginal.onload = function() {redimensionarYProcesar();};// Cargamos una imagen pública y libre de un felino para la pruebaimagenOriginal.src = "unsplash.com";});// 5. Botón de exportación inmediata a formato PNG de alta fidelidadbtnExportar.addEventListener('click', function() {if (!imagenOriginal) {alert("Por favor, procesa una imagen primero antes de exportar.");return;}const enlace = document.createElement('a');enlace.download = 'poligonal-art.png';enlace.href = canvas.toDataURL('image/png');enlace.click();});// Ajusta el lienzo de forma fluida respetando las proporciones de la fotografía originalfunction redimensionarYProcesar() {const maxAncho = 600;const proporcion = imagenOriginal.height / imagenOriginal.width;canvas.width = maxAncho;canvas.height = maxAncho * proporcion;generarLowPoly();}// El motor core: distribuye vértices y triangula usando lógica de Delaunayfunction generarLowPoly() {const ancho = canvas.width;const alto = canvas.height;const numeroPuntos = parseInt(sliderPuntos.value);// Creamos un canvas temporal en memoria para poder leer rápidamente los colores originalesconst canvasOculto = document.createElement('canvas');canvasOculto.width = ancho;canvasOculto.height = alto;const ctxOculto = canvasOculto.getContext('2d');ctxOculto.drawImage(imagenOriginal, 0, 0, ancho, alto);const datosImagen = ctxOculto.getImageData(0, 0, ancho, alto);// Estructura de vérticesconst puntos = [];// Forzar las 4 esquinas exactas del lienzo para evitar fugas o fondos vacíospuntos.push([0, 0], [ancho, 0], [0, alto], [ancho, alto]);// Generamos una distribución uniforme aleatoria por todo el plano geométricofor (let i = 0; i < numeroPuntos; i++) {puntos.push([Math.random() * ancho, Math.random() * alto]);}// Calculamos la red de mallas usando la librería D3const delaunay = d3.Delaunay.from(puntos);const poligonos = delaunay.trianglePolygons();ctx.clearRect(0, 0, ancho, alto);// Iteramos sobre cada triángulo calculado, promediamos su color y lo plasmamosfor (const triangulo of poligonos) {ctx.beginPath();ctx.moveTo(triangulo[0][0], triangulo[0][1]);ctx.lineTo(triangulo[1][0], triangulo[1][1]);ctx.lineTo(triangulo[2][0], triangulo[2][1]);ctx.closePath();// Ubicamos el baricentro o punto medio del triángulo para extraer su tonalidad exactaconst centroX = Math.floor((triangulo[0][0] + triangulo[1][0] + triangulo[2][0]) / 3);const centroY = Math.floor((triangulo[0][1] + triangulo[1][1] + triangulo[2][1]) / 3);// Mapeo del buffer binario RGBA de la imagen originalconst indice = (centroY * ancho + centroX) * 4;const r = datosImagen.data[indice];const g = datosImagen.data[indice + 1];const b = datosImagen.data[indice + 2];// Rellenar área plana del polígonoctx.fillStyle = rgb(${r || 0}, ${g || 0}, ${b || 0});ctx.fill();// Truco técnico antipíxel: repintamos bordes con trazado ultra fino idéntico para evitar grietas visualesctx.strokeStyle = ctx.fillStyle;ctx.lineWidth = 0.6;ctx.stroke();}}
+            const lector = new FileReader();
+            lector.onload = function(evento) {
+                imagenOriginal = new Image();
+                imagenOriginal.onload = function() {
+                    const maxAncho = 600;
+                    const proporcion = imagenOriginal.height / imagenOriginal.width;
+                    canvas.width = maxAncho;
+                    canvas.height = maxAncho * proporcion;
+
+                    generarLowPolyAutomatico();
+                };
+                imagenOriginal.src = evento.target.result;
+            };
+            lector.readAsDataURL(archivo);
+        }
+
+        // Motor de transformación matemática a Low Poly inteligente
+        function generarLowPolyAutomatico() {
+            if (!imagenOriginal) return;
+
+            const ancho = canvas.width;
+            const alto = canvas.height;
+            const maxPuntos = parseInt(sliderPuntos.value) || 1200;
+
+            const canvasOculto = document.createElement('canvas');
+            canvasOculto.width = ancho;
+            canvasOculto.height = alto;
+            const ctxOculto = canvasOculto.getContext('2d');
+            ctxOculto.drawImage(imagenOriginal, 0, 0, ancho, alto);
+            const datosImagen = ctxOculto.getImageData(0, 0, ancho, alto);
+
+            const puntos = [];
+            
+            // Anclajes de bordes y esquinas estructurales
+            puntos.push([0, 0], [ancho, 0], [0, alto], [ancho, alto]);
+            for (let x = 0; x <= ancho; x += 50) { puntos.push([x, 0]); puntos.push([x, alto]); }
+            for (let y = 0; y <= alto; y += 50) { puntos.push([0, y]); puntos.push([ancho, y]); }
+
+            // Algoritmo adaptativo basado en contraste (concentra puntos en áreas con detalles)
+            let puntosGenerados = 0;
+            let intentos = 0;
+            
+            while (puntosGenerados < maxPuntos && intentos < maxPuntos * 10) {
+                intentos++;
+                const rx = Math.floor(Math.random() * (ancho - 2)) + 1;
+                const ry = Math.floor(Math.random() * (alto - 2)) + 1;
+                
+                const i = (ry * ancho + rx) * 4;
+                const iDerecha = (ry * ancho + (rx + 1)) * 4;
+                const iAbajo = ((ry + 1) * ancho + rx) * 4;
+                
+                const brilloActual = (datosImagen.data[i] + datosImagen.data[i+1] + datosImagen.data[i+2]) / 3;
+                const brilloDerecha = (datosImagen.data[iDerecha] + datosImagen.data[iDerecha+1] + datosImagen.data[iDerecha+2]) / 3;
+                const brilloAbajo = (datosImagen.data[iAbajo] + datosImagen.data[iAbajo+1] + datosImagen.data[iAbajo+2]) / 3;
+                
+                const diferencia = Math.abs(brilloActual - brilloDerecha) + Math.abs(brilloActual - brilloAbajo);
+                
+                if (diferencia > 22 || Math.random() < 0.04) {
+                    puntos.push([rx, ry]);
+                    puntosGenerados++;
+                }
+            }
+
+            const delaunay = d3.Delaunay.from(puntos);
+            const triangulosMalla = delaunay.trianglePolygons();
+
+            ctx.clearRect(0, 0, ancho, alto);
+
+            for (const triangulo of triangulosMalla) {
+                ctx.beginPath();
+                ctx.moveTo(triangulo[0][0], triangulo[0][1]);
+                ctx.lineTo(triangulo[1][0], triangulo[1][1]);
+                ctx.lineTo(triangulo[2][0], triangulo[2][1]);
+                ctx.closePath();
+
+                const centroX = Math.floor((triangulo[0][0] + triangulo[1][0] + triangulo[2][0]) / 3);
+                const centroY = Math.floor((triangulo[0][1] + triangulo[1][1] + triangulo[2][1]) / 3);
+
+                if (centroX >= 0 && centroX < ancho && centroY >= 0 && centroY < alto) {
+                    const indicePixel = (centroY * ancho + centroX) * 4;
+                    const r = datosImagen.data[indicePixel];
+                    const g = datosImagen.data[indicePixel + 1];
+                    const b = datosImagen.data[indicePixel + 2];
+
+                    ctx.fillStyle = `rgb(${r || 0}, ${g || 0}, ${b || 0})`;
+                    ctx.fill();
+
+                    ctx.strokeStyle = ctx.fillStyle;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        // Configuración de interfaz Drag and Drop (Arrastrar y Soltar)
+        if (areaDibujo) {
+            ['dragenter', 'dragover'].forEach(evt => {
+                areaDibujo.addEventListener(evt, (e) => {
+                    e.preventDefault();
+                    areaDibujo.style.borderColor = "#a38965";
+                    canvas.style.opacity = "0.6";
+                });
+            });
+
+            ['dragleave', 'drop'].forEach(evt => {
+                areaDibujo.addEventListener(evt, (e) => {
+                    e.preventDefault();
+                    areaDibujo.style.borderColor = "#1e293b";
+                    canvas.style.opacity = "1";
+                });
+            });
+
+            areaDibujo.addEventListener('drop', (e) => {
+                e.preventDefault();
+                if (e.dataTransfer.files.length > 0) {
+                    procesarArchivo(e.dataTransfer.files[0]);
+                }
+            });
+            
+            // Permitir abrir explorador haciendo clic directo en el área del lienzo vacío
+            areaDibujo.addEventListener('click', (e) => {
+                if (!imagenOriginal && e.target === canvas) {
+                    inputSubir.click();
+                }
+            });
+        }
+
+        inputSubir.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                procesarArchivo(e.target.files[0]);
+            }
+        });
+
+        sliderPuntos.addEventListener('input', function() {
+            if (valorPuntos) valorPuntos.textContent = `${this.value} pts`;
+            if (imagenOriginal) generarLowPolyAutomatico();
+        });
+
+        btnExportar.addEventListener('click', function() {
+            if (!imagenOriginal) {
+                alert("Primero debes procesar una imagen para poder exportarla.");
+                return;
+            }
+            const enlace = document.createElement('a');
+            enlace.download = 'mi-patron-lowpoly.png';
+            enlace.href = canvas.toDataURL('image/png');
+            enlace.click();
+        });
+
+        tarjetaGato.addEventListener('click', function() {
+            imagenOriginal = new Image();
+            imagenOriginal.crossOrigin = "anonymous";
+            imagenOriginal.onload = function() {
+                canvas.width = 600;
+                canvas.height = 400;
+                generarLowPolyAutomatico();
+            };
+            imagenOriginal.src = "https://unsplash.com";
+        });
+    </script>
+</body>
+</html>
