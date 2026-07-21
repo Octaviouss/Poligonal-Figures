@@ -144,21 +144,50 @@
             margin-top: 10px;
         }
 
-        /* El Selector Dropdown */
-        #selector-plantilla {
-            background-color: #0f172a;
-            color: #f1f5f9;
-            border: 1px solid #334155;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            outline: none;
-            cursor: pointer;
-            transition: border-color 0.2s;
+        /* Contenedor estilizado para el input file */
+        .input-subir-personalizado {
+            position: relative;
+            display: inline-block;
         }
 
-        #selector-plantilla:focus {
-            border-color: #64748b;
+        .input-subir-personalizado input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .btn-subir-estilo {
+            background-color: #1e293b;
+            color: #ffffff;
+            border: 1px solid #334155;
+            display: inline-block;
+        }
+
+        .btn-subir-estilo:hover {
+            background-color: #334155;
+            border-color: #475569;
+        }
+
+        /* Controles deslizantes (Sliders) */
+        .control-slider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+        }
+
+        .control-slider input[type="range"] {
+            cursor: pointer;
+            accent-color: #a38965;
         }
 
         /* Botonera de Acción de Alta Gama */
@@ -172,19 +201,6 @@
             border: none;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Botón Cambiar Paleta: Minimalista e Industrial */
-        #btn-color {
-            background-color: transparent;
-            color: #e2e8f0;
-            border: 1px solid #475569;
-        }
-
-        #btn-color:hover {
-            background-color: #1e293b;
-            border-color: #94a3b8;
-            color: #ffffff;
         }
 
         /* Botón Descargar: El Call to Action de Compra */
@@ -227,53 +243,66 @@
             <canvas id="lienzo" width="600" height="400"></canvas>
         </div>
 
+        <!-- 2. PANEL DE CONTROLES (Integrado y Ampliado) -->
+        <div id="panel-controles">
+            <!-- Botón estilizado para subir foto propia -->
+            <div class="input-subir-personalizado">
+                <button class="btn-subir-estilo">📷 Subir mi propia imagen</button>
+                <input type="file" id="subir-imagen" accept="image/*">
+            </div>
+
+            <!-- Slider interactivo para controlar la densidad de polígonos -->
+            <div class="control-slider">
+                <label for="slider-puntos">Densidad:</label>
+                <input type="range" id="slider-puntos" min="300" max="3000" step="100" value="1200">
+                <span id="valor-puntos">1200 pts</span>
+            </div>
+
+            <!-- Botón Exportar / Guardar resultado -->
+            <button id="btn-exportar">Descargar PNG</button>
+        </div>
+
         <!-- 3. GALERÍA DE DISEÑOS PRECARGADOS -->
         <div id="seccion-catatogo">
             <h3>📐 COLECCIÓN ESCULTURAS COMANCHET: ESTUDIO DE ARTE</h3>
             
             <div class="galeria-cuadricula">
-                
-                <!-- Modelo 1: Toro de Wall Street -->
-                <div class="tarjeta-diseno" data-img="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150' style='background:%230f172a;'><polygon points='30,80 55,65 70,85 45,95' fill='%233a4a61' stroke='%235c708c' stroke-width='0.5'/><polygon points='55,65 50,35 40,45' fill='%2364748b' stroke='%2394a3b8' stroke-width='0.5'/><polygon points='55,65 100,50 120,85 70,85' fill='%2327354a' stroke='%233b4f6e' stroke-width='0.5'/><polygon points='100,50 155,55 170,90 120,85' fill='%231e293b' stroke='%23334155' stroke-width='0.5'/><polygon points='70,85 120,85 145,110 85,110' fill='%23141d2e' stroke='%2324334f' stroke-width='0.5'/><polygon points='45,95 70,85 85,110 75,135 60,135' fill='%231c2636' stroke='%232e3f59' stroke-width='0.5'/><polygon points='155,55 170,90 160,135 145,135 145,110' fill='%23222e44' stroke='%23364968' stroke-width='0.5'/><polygon points='170,90 185,85 180,105' fill='%230f172a' stroke='%231e293b' stroke-width='0.5'/></svg>">
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150' style='background:%231e293b; border-radius:6px;'><polygon points='30,80 55,65 70,85 45,95' fill='%233a4a61' stroke='%235c708c' stroke-width='0.5'/><polygon points='55,65 50,35 40,45' fill='%2364748b' stroke='%2394a3b8' stroke-width='0.5'/><polygon points='55,65 100,50 120,85 70,85' fill='%2327354a' stroke='%233b4f6e' stroke-width='0.5'/><polygon points='100,50 155,55 170,90 120,85' fill='%231e293b' stroke='%23334155' stroke-width='0.5'/><polygon points='70,85 120,85 145,110 85,110' fill='%23141d2e' stroke='%2324334f' stroke-width='0.5'/><polygon points='45,95 70,85 85,110 75,135 60,135' fill='%231c2636' stroke='%232e3f59' stroke-width='0.5'/><polygon points='155,55 170,90 160,135 145,135 145,110' fill='%23222e44' stroke='%23364968' stroke-width='0.5'/></svg>" alt="Toro Geométrico">
-                    <p>Toro de Wall Street</p>
+                <!-- Tarjeta Demo Gato Low Poly (Usando una muestra genérica basada en tu idea) -->
+                <div class="tarjeta-diseno" id="tarjeta-gato">
+                    <img src="https://unsplash.com" alt="Gato">
+                    <p>Gato de Estudio</p>
                 </div>
-
-                <!-- Modelo 2: Elefante Imperial -->
-                <div class="tarjeta-diseno" data-img="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150' style='background:%230f172a;'><polygon points='60,65 90,55 85,95 55,90' fill='%23334155' stroke='%23475569' stroke-width='0.5'/><polygon points='40,70 60,65 55,90 35,90' fill='%23475569' stroke='%2364748b' stroke-width='0.5'/><polygon points='35,90 20,70 25,60 40,70' fill='%231e293b' stroke='%23334155' stroke-width='0.5'/><polygon points='25,60 22,40 32,42 28,60' fill='%232d3748' stroke='%234a5568' stroke-width='0.5'/><polygon points='90,55 145,50 170,90 125,105 85,95' fill='%231e293b' stroke='%232d3748' stroke-width='0.5'/><polygon points='55,90 85,95 80,135 65,135' fill='%23141a24' stroke='%23232d3f' stroke-width='0.5'/><polygon points='125,105 170,90 160,135 145,135' fill='%232d3748' stroke='%234a5568' stroke-width='0.5'/></svg>">
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150' style='background:%231e293b; border-radius:6px;'><polygon points='60,65 90,55 85,95 55,90' fill='%23334155' stroke='%23475569' stroke-width='0.5'/><polygon points='40,70 60,65 55,90 35,90' fill='%23475569' stroke='%2364748b' stroke-width='0.5'/><polygon points='35,90 20,70 25,60 40,70' fill='%231e293b' stroke='%23334155' stroke-width='0.5'/><polygon points='25,60 22,40 32,42 28,60' fill='%232d3748' stroke='%234a5568' stroke-width='0.5'/><polygon points='90,55 145,50 170,90 125,105 85,95' fill='%231e293b' stroke='%232d3748' stroke-width='0.5'/><polygon points='55,90 85,95 80,135 65,135' fill='%23141a24' stroke='%23232d3f' stroke-width='0.5'/><polygon points='125,105 170,90 160,135 145,135' fill='%232d3748' stroke='%234a5568' stroke-width='0.5'/></svg>" alt="Elefante Geométrico">
-                    <p>Elefante Imperial</p>
-                </div>
-
-                <!-- Modelo 3: Rinoceronte Negro -->
-                <div class="tarjeta-diseno" data-img="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150' style='background:%230f172a;'><polygon points='50,90 85,65 105,85 70,110' fill='%23242e42' stroke='%233b4b6b' stroke-width='0.5'/><polygon points='50,90 35,60 55,75' fill='%234f5e78' stroke='%23768ba8' stroke-width='0.5'/><polygon points='55,75 48,63 60,70' fill='%23334155' stroke='%23475569' stroke-width='0.5'/><polygon points='85,65 145,60 175,90 105,85' fill='%231a2333' stroke='%232a374f' stroke-width='0.5'/><polygon points='105,85 175,90 155,115 110,115' fill='%23101724' stroke='%231f2b42' stroke-width='0.5'/><polygon points='55,100 70,110 65,135 50,135' fill='%23141c29' stroke='%2325324a' stroke-width='0.5'/><polygon points='145,95 175,90 165,135 150,135' fill='%23222d42' stroke='%23384a6b' stroke-width='0.5'/></svg>">
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150' style='background:%231e293b; border-radius:6px;'><polygon points='50,90 85,65 105,85 70,110' fill='%23242e42' stroke='%233b4b6b' stroke-width='0.5'/><polygon points='50,90 35,60 55,75' fill='%234f5e78' stroke='%23768ba8' stroke-width='0.5'/><polygon points='55,75 48,63 60,70' fill='%23334155' stroke='%23475569' stroke-width='0.5'/><polygon points='85,65 145,60 175,90 105,85' fill='%231a2333' stroke='%232a374f' stroke-width='0.5'/><polygon points='105,85 175,90 155,115 110,115' fill='%23101724' stroke='%231f2b42' stroke-width='0.5'/><polygon points='55,100 70,110 65,135 50,135' fill='%23141c29' stroke='%2325324a' stroke-width='0.5'/><polygon points='145,95 175,90 165,135 150,135' fill='%23222d42' stroke='%23384a6b' stroke-width='0.5'/></svg>" alt="Rinoceronte Geométrico">
-                    <p>Rinoceronte Negro</p>
-                </div>
-
-                <!-- Modelo 4: Pantera Sigilosa -->
-                <div class="tarjeta-diseno" data-img="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150' style='background:%230f172a;'><polygon points='30,85 50,75 60,85 45,100' fill='%231e2530' stroke='%23333f52' stroke-width='0.5'/><polygon points='50,75 45,68 55,72' fill='%23333f52' stroke='%234f617d' stroke-width='0.5'/><polygon points='50,75 105,70 135,85 60,85' fill='%23151b24' stroke='%23242e3d' stroke-width='0.5'/><polygon points='105,70 165,75 175,95 135,85' fill='%0e121a' stroke='%231c2430' stroke-width='0.5'/><polygon points='45,100 60,85 70,125 55,125' fill='%2311161f' stroke='%23222b3d' stroke-width='0.5'/><polygon points='135,85 175,95 165,125 150,125' fill='%231c2533' stroke='%23314057' stroke-width='0.5'/><polygon points='165,75 190,95 185,100 175,95' fill='%230a0d14' stroke='%23141b26' stroke-width='0.5'/></svg>">
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150' style='background:%231e293b; border-radius:6px;'><polygon points='30,85 50,75 60,85 45,100' fill='%231e2530' stroke='%23333f52' stroke-width='0.5'/><polygon points='50,75 45,68 55,72' fill='%23333f52' stroke='%234f617d' stroke-width='0.5'/><polygon points='50,75 105,70 135,85 60,85' fill='%23151b24' stroke='%23242e3d' stroke-width='0.5'/><polygon points='105,70 165,75 175,95 135,85' fill='%0e121a' stroke='%231c2430' stroke-width='0.5'/><polygon points='45,100 60,85 70,125 55,125' fill='%2311161f' stroke='%23222b3d' stroke-width='0.5'/><polygon points='135,85 175,95 165,125 150,125' fill='%231c2533' stroke='%23314057' stroke-width='0.5'/><polygon points='165,75 190,95 185,100 175,95' fill='%230a0d14' stroke='%23141b26' stroke-width='0.5'/></svg>" alt="Pantera Geométrica">
-                    <p>Pantera Sigilosa</p>
-                </div>
-
             </div>
-        </div>
-
-        <!-- 2. Los Botones de control -->
-        <div id="panel-controles">
-            <select id="selector-plantilla">
-                <option value="ninguna">✨ Lienzo en Blanco</option>
-                <option value="corazon">❤️ Plantilla: Corazón</option>
-                <option value="diamante">💎 Plantilla: Diamante</option>
-            </select>
-
-            <button id="btn-color">🎨 Cambiar Paleta de Color</button>
-            <button id="btn-exportar">📥 Comprar y Descargar Archivo</button>
         </div>
     </main>
 
-    <!-- CONEXIÓN CON EL SCRIPT ÚNICO -->
-    <script src="script.js"></script>
-</body>
-</html>
+    <!-- ==========================================
+       LÓGICA JAVASCRIPT: MOTOR LOW POLY CON DELAUNAY
+       ========================================== -->
+    <!-- Cargamos D3-Delaunay: librería matemática ultrarrápida para computar mallas poligonales -->
+    <script src="https://cloudflare.com"></script>
+    <script>
+        const canvas = document.getElementById('lienzo');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const inputSubir = document.getElementById('subir-imagen');
+        const sliderPuntos = document.getElementById('slider-puntos');
+        const valorPuntos = document.getElementById('valor-puntos');
+        const btnExportar = document.getElementById('btn-exportar');
+        const tarjetaGato = document.getElementById('tarjeta-gato');
+
+        let imagenOriginal = null;
+
+        // 1. Inicializar el canvas con un mensaje artístico elegante
+        ctx.fillStyle = "#0f172a";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#64748b";
+        ctx.font = "16px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("Sube una foto o selecciona una tarjeta para iniciar", canvas.width / 2, canvas.height / 2);
+
+        // 2. Escuchar la carga de imágenes propias
+        inputSubir.addEventListener('change', function(e) {
+            const archivo = e.target.files[0];
+            if (!archivo) return;
+
+Usa el código con precaución.const lector = new FileReader();lector.onload = function(evento) {imagenOriginal = new Image();imagenOriginal.crossOrigin = "anonymous";imagenOriginal.onload = function() {redimensionarYProcesar();};imagenOriginal.src = evento.target.result;};lector.readAsDataURL(archivo);});// 3. Control dinámico de densidad con el slidersliderPuntos.addEventListener('input', function() {valorPuntos.textContent = ${this.value} pts;if (imagenOriginal) {generarLowPoly();}});// 4. Hacer clic en la tarjeta demo del gatotarjetaGato.addEventListener('click', function() {imagenOriginal = new Image();imagenOriginal.crossOrigin = "anonymous";imagenOriginal.onload = function() {redimensionarYProcesar();};// Cargamos una imagen pública y libre de un felino para la pruebaimagenOriginal.src = "unsplash.com";});// 5. Botón de exportación inmediata a formato PNG de alta fidelidadbtnExportar.addEventListener('click', function() {if (!imagenOriginal) {alert("Por favor, procesa una imagen primero antes de exportar.");return;}const enlace = document.createElement('a');enlace.download = 'poligonal-art.png';enlace.href = canvas.toDataURL('image/png');enlace.click();});// Ajusta el lienzo de forma fluida respetando las proporciones de la fotografía originalfunction redimensionarYProcesar() {const maxAncho = 600;const proporcion = imagenOriginal.height / imagenOriginal.width;canvas.width = maxAncho;canvas.height = maxAncho * proporcion;generarLowPoly();}// El motor core: distribuye vértices y triangula usando lógica de Delaunayfunction generarLowPoly() {const ancho = canvas.width;const alto = canvas.height;const numeroPuntos = parseInt(sliderPuntos.value);// Creamos un canvas temporal en memoria para poder leer rápidamente los colores originalesconst canvasOculto = document.createElement('canvas');canvasOculto.width = ancho;canvasOculto.height = alto;const ctxOculto = canvasOculto.getContext('2d');ctxOculto.drawImage(imagenOriginal, 0, 0, ancho, alto);const datosImagen = ctxOculto.getImageData(0, 0, ancho, alto);// Estructura de vérticesconst puntos = [];// Forzar las 4 esquinas exactas del lienzo para evitar fugas o fondos vacíospuntos.push([0, 0], [ancho, 0], [0, alto], [ancho, alto]);// Generamos una distribución uniforme aleatoria por todo el plano geométricofor (let i = 0; i < numeroPuntos; i++) {puntos.push([Math.random() * ancho, Math.random() * alto]);}// Calculamos la red de mallas usando la librería D3const delaunay = d3.Delaunay.from(puntos);const poligonos = delaunay.trianglePolygons();ctx.clearRect(0, 0, ancho, alto);// Iteramos sobre cada triángulo calculado, promediamos su color y lo plasmamosfor (const triangulo of poligonos) {ctx.beginPath();ctx.moveTo(triangulo[0][0], triangulo[0][1]);ctx.lineTo(triangulo[1][0], triangulo[1][1]);ctx.lineTo(triangulo[2][0], triangulo[2][1]);ctx.closePath();// Ubicamos el baricentro o punto medio del triángulo para extraer su tonalidad exactaconst centroX = Math.floor((triangulo[0][0] + triangulo[1][0] + triangulo[2][0]) / 3);const centroY = Math.floor((triangulo[0][1] + triangulo[1][1] + triangulo[2][1]) / 3);// Mapeo del buffer binario RGBA de la imagen originalconst indice = (centroY * ancho + centroX) * 4;const r = datosImagen.data[indice];const g = datosImagen.data[indice + 1];const b = datosImagen.data[indice + 2];// Rellenar área plana del polígonoctx.fillStyle = rgb(${r || 0}, ${g || 0}, ${b || 0});ctx.fill();// Truco técnico antipíxel: repintamos bordes con trazado ultra fino idéntico para evitar grietas visualesctx.strokeStyle = ctx.fillStyle;ctx.lineWidth = 0.6;ctx.stroke();}}
